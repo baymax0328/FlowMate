@@ -1,0 +1,14 @@
+-- 022 · 任务「环节化多经手人」协作
+-- 背景：经手人链从「一人一环的线性链」升级为「有序环节，每环节可多位经手人同时协作」。
+--   环节之间用箭头表前后顺序；同一环节的经手人各自接收、各自负责；
+--   仅当本环节所有经手人都「交接」后才推进到下一环节；
+--   仅当本环节所有经手人都「退回」任务才回到创建人（有人接收就不会回退）。
+-- 沿用本项目「SQLite 一律 ADD COLUMN、不重建表」的约定（见 011/012）。
+--
+-- stages：JSON 数组，形如 [[{id,state,accepted_at,handed_off_at,duration_ms}, ...], ...]
+--   外层顺序即环节先后，内层是该环节的经手人集合（可多选）。
+--   state ∈ pending / accepted / handed_off / rejected。
+-- handler_index 复用为「当前环节指针」（语义等价原来的经手人指针）。
+-- 既有 handlers 列继续作为「全部环节经手人的有序并集」写入，供姓名显示 / 可见性判定等老逻辑复用；
+-- assignee_id 写当前环节里第一个还没处理完（pending/accepted）的成员，作为列表姓名列的代表值。
+ALTER TABLE tasks ADD COLUMN stages TEXT NOT NULL DEFAULT '[]';

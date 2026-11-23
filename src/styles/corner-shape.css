@@ -1,0 +1,73 @@
+/* 连续曲率圆角（Apple 风格 squircle）——独立、可一键回退的一层。
+   原理：只较新的 CSS 属性 corner-shape 负责圆角「曲线形状」，border-radius 继续负责「大小」。
+   本层刻意不改任何 border-radius 数值，只把直线接圆弧的接口改成平滑过渡（超椭圆）。
+   生效范围：仅支持 corner-shape 的浏览器（Chrome / Edge 139+）；Safari / Firefox 自动退回普通圆角，页面不坏。
+   排除项：正圆元素（头像、开关拇指、状态环、小圆点、胶囊标签）不套 squircle，避免圆被改成方块。
+   整体回退：删除本文件 + main.tsx 里对应那一行 import 即可，其余样式不受影响。 */
+
+@supports (corner-shape: squircle) {
+  /* 主要矩形表面：卡片 / 面板 / 指标块 / 文件卡 / 表格容器 / 弹窗 / 浮层 / 提示 / 输入区 */
+  :where(
+    .card, .personal-panel, .personal-metric, .team-metric, .team-task-distribution,
+    .exec, .task-board, .stage, .task-stage-symbol, .task-create-option, .workflow-stage-card,
+    .shared-file-card, .dashboard-welcome, .dashboard-quick-actions, .login-card,
+    .document-file-card, .table-wrap, .task-data-wrap,
+    .modal, .modal-head, .modal-body, .pop, .emoji-picker, .office-mention-picker, .note, .toast,
+    .searchbox, .composer, .office-compose-box, .message-compose-box,
+    .task-filter-toolbar, .schedule-task-tray > button, .schedule-drag-ghost,
+    .dashboard-task-drawer, .ref-card, .tree-path
+  ) { corner-shape: squircle; }
+
+  /* 菜单 / 浮层 / 选择器面板（逐个验真：JSX 在用且 CSS 有非零圆角） */
+  :where(
+    .mention-pop, .pop-item, .handler-member-menu, .handler-member-options,
+    .handler-select-trigger, .group-role-options, .schedule-time-row
+  ) { corner-shape: squircle; }
+
+  /* 按钮与可点击控件走连续曲率：胶囊按钮 .btn、图标按钮、链接按钮、行内菜单、归档入口、标签页。
+     例外：分段 / 滑块类控件（.seg-pill、.view-toggle、.slide-toggle 及滑块 thumb）保持原本的圆胶囊，
+     不列入 squircle——它们端头被压方会失去胶囊感。 */
+  :where(
+    .btn, .icon-btn, .btn-link, .row-menu, .archived-entry-btn,
+    .tab, .subtab
+  ) { corner-shape: squircle; }
+
+  /* 侧栏行选中态背景块走连续曲率。
+     注意：最左侧主导航 .nav-item 不列入——它本身是 999px 胶囊、折叠态另有 42px 正圆 ::before，
+     套 squircle 会把胶囊端头压方，破坏「展开=胶囊 / 折叠=正圆」的既有设计。 */
+  :where(.side .row-item, .side .row-item.group) { corner-shape: squircle; }
+
+  /* 表单输入全局兜底：所有 input（除复选 / 单选 / 滑块 / 取色）+ textarea + select，
+     不再只挑 text/search/password，一并覆盖弹窗内外及 number/date/time/email/url 等 */
+  :where(
+    input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),
+    textarea, select
+  ) { corner-shape: squircle; }
+}
+
+/* ===== 圆角补偿：squircle 在同一半径下比方、显硬，这里按各组件原值等比放大「半径」把观感调圆 =====
+   只改大小、不改曲线；沿用各组件的胜利选择器（含特异度），保证覆盖得掉、又不误伤更特殊的例外：
+   - .detail .card 仍保持 0（详情面板里的贴边卡片，特异度更高，不被下面的 .card 影响）
+   - 胶囊类（.btn / .seg-pill / .view-toggle / .slide-toggle）半径已封顶 999px，放大无效，故不在此列；
+     若它们仍显方，靠的是把 corner-shape 从 squircle 调柔成 superellipse(1.5)，不是加大半径。
+   整体更圆 / 更方，只调这一个数：--sq-round（1 = 原样，越大越圆）。 */
+@supports (corner-shape: squircle) {
+  :root { --sq-round: 1.9; }
+
+  .card, .dash .card { border-radius: calc(16px * var(--sq-round)); }
+  .personal-panel { border-radius: calc(18px * var(--sq-round)); }
+  .personal-metric { border-radius: calc(17px * var(--sq-round)); }
+  .team-metric { border-radius: calc(15px * var(--sq-round)); }
+  .team-task-distribution { border-radius: calc(16px * var(--sq-round)); }
+  .document-file-card { border-radius: calc(16px * var(--sq-round)); }
+  .table-wrap, .task-data-wrap { border-radius: calc(14px * var(--sq-round)); }
+  .pop { border-radius: calc(16px * var(--sq-round)); }
+  .note { border-radius: calc(8px * var(--sq-round)); }
+  .toast { border-radius: calc(var(--r-sm) * var(--sq-round)); }
+  .searchbox { border-radius: calc(10px * var(--sq-round)); }
+  .office-compose-box, .message-compose-box { border-radius: calc(15px * var(--sq-round)); }
+  .ref-card { border-radius: calc(10px * var(--sq-round)); }
+  .archived-entry-btn { border-radius: calc(10px * var(--sq-round)); }
+  .icon-btn { border-radius: calc(12px * var(--sq-round)); }
+  body .modal { border-radius: calc(22px * var(--sq-round)); }
+}

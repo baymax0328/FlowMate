@@ -1,0 +1,17 @@
+node_modules/
+dist/
+data/
+storage/
+backups/
+.env
+ApiKeys.txt
+*.log
+.DS_Store
+.vite/
+coverage/
+
+# pnpm 本地缓存与验证痕迹
+.pnpm-store/
+.probe/
+data-probe*/
+storage-probe*/

@@ -1,0 +1,20 @@
+{
+  "产品": "FlowMate v2.5（Lite 模式：Node + 内置 SQLite，无需装数据库）",
+  "生成时间": "2026-11-09T14:36:53.047Z",
+  "含演示数据": "是（本机当前数据）",
+  "含构建产物": true,
+  "文件数": 445,
+  "原始字节": 31824597,
+  "已排除": [
+    "node_modules",
+    ".env（真实模型密钥，绝不外发）",
+    "backups",
+    "data-probe* / storage-probe* / scratch / .probe（本机验证痕迹）",
+    "*.log"
+  ],
+  "对方三步": [
+    "解压",
+    "pnpm install",
+    "pnpm start，然后打开 http://localhost:8080（账号密码见包内《README.md》）"
+  ]
+}

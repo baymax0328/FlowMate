@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="260" viewBox="0 0 360 260" fill="none">
+  <style>@media(prefers-color-scheme:dark){.halo{opacity:.24}.paper{opacity:.6}.ground{opacity:.2}.mark{opacity:.9}}</style>
+  <defs>
+    <radialGradient id="halo"><stop stop-color="#edf3ed" stop-opacity=".85"/><stop offset="1" stop-color="#eff4ef" stop-opacity=".35"/></radialGradient>
+    <linearGradient id="paper" x1="70" y1="60" x2="190" y2="195" gradientUnits="userSpaceOnUse"><stop stop-color="#e6ece7"/><stop offset="1" stop-color="#cbd8cc"/></linearGradient>
+    <linearGradient id="green" x1="140" y1="77" x2="239" y2="216" gradientUnits="userSpaceOnUse"><stop stop-color="#9aba9e"/><stop offset=".52" stop-color="#709d7c"/><stop offset="1" stop-color="#487956"/></linearGradient>
+    <linearGradient id="lines" x1="160" y1="100" x2="230" y2="200" gradientUnits="userSpaceOnUse"><stop stop-color="#89ac8e"/><stop offset="1" stop-color="#58845f"/></linearGradient>
+  </defs>
+  <circle class="halo" cx="181" cy="124" r="110" fill="url(#halo)"/>
+  <ellipse class="ground" cx="181" cy="237" rx="103" ry="15" fill="#dbe6dc" opacity=".65"/>
+  <ellipse class="ground" cx="181" cy="234" rx="57" ry="6" fill="#c2d2c5" opacity=".5"/>
+  <g class="paper" transform="rotate(-17 132 116)">
+    <rect x="73" y="90" width="61" height="91" rx="10" fill="url(#paper)" opacity=".8"/>
+    <path d="M86 110h33m-33 13h26m-26 13h29m-29 13h23" stroke="#b8cbbd" stroke-opacity=".65" stroke-width="5" stroke-linecap="round"/>
+    <rect x="107" y="54" width="65" height="105" rx="10" fill="url(#paper)"/>
+    <path d="M120 77h39m-39 14h35m-35 14h38m-38 14h26" stroke="#bdcfc1" stroke-opacity=".7" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g class="mark" stroke="url(#green)" stroke-width="7" stroke-linecap="round"><path d="m166 131 48-32m-48 56 49 28"/></g>
+  <g class="mark" stroke="url(#green)" stroke-width="8.5"><circle cx="151" cy="144" r="19"/><circle cx="232" cy="88" r="19"/><circle cx="234" cy="192" r="19"/></g>
+  <path class="mark" d="m251 52 3-13m13 22 8-10m-1 24 12-4" stroke="url(#lines)" stroke-width="6" stroke-linecap="round"/>
+</svg>

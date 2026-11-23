@@ -1,0 +1,273 @@
+/* Neutral charcoal palette. Emerald signals action and selection, never body text. */
+:root[data-theme=dark] {
+ color-scheme:dark;
+ --page-bg:#070908; --surface:#101311; --surface-2:#1a1e1b; --side-bg:#0d100e;
+ --nav-bg:#0b0e0c; --nav-bg-soft:#1a201c; --nav-fg:#dfe3e6; --nav-fg-dim:#bcc3c9;
+ --text:#e9ebee; --text-2:#c6ccd2; --text-3:#98a1aa; --line:#252c27; --line-strong:#39443c;
+ --grow:#69ba97; --grow-dark:#a6dec4; --grow-soft:#30483e; --focus:#8bceb0;
+ --danger:#ffb8ba; --danger-soft:#4d2e35; --warn:#f0d09e; --warn-soft:#443a2b; --info:#bbd9f5; --info-soft:#2c3d50;
+ --shadow-pop:0 18px 55px #0007;
+}
+html[data-theme=dark] body,html[data-theme=dark] .light-emerald,
+html[data-theme=dark] .light-emerald :is(.main,.body-scroll,.dash,.personal-dashboard,.team-dashboard,.account-work,.task-content) { background:var(--page-bg); color:var(--text); }
+html[data-theme=dark] .light-emerald :is(.nav,.top,.side,.work,.detail,.card,.personal-panel,.personal-metric,.team-metric,.team-task-distribution,.exec,.exec-card,.task-card,.table-wrap,.sched-cal,.composer,.office-compose-box,.message-compose-box,.task-data-panel,.task-data-wrap,.side-head,.detail-body,.document-content) { background:var(--surface); color:var(--text); border-color:var(--line); }
+html[data-theme=dark] .light-emerald :is(.card-head,.tabs,.subtabs,.task-filter-toolbar,.detail-head,.lan-banner,.sched-head) { background:var(--surface); border-color:var(--line); color:var(--text-2); }
+html[data-theme=dark] .light-emerald :is(h1,h2,h3,h4,.card-title,.side-title,.inbox-title,.breadcrumb-current,.nav-name,.task-stage-title,.task-stage-count,.profile-identity-text strong,.milestone-title,.focus-body b,.team-metric-text > span,.personal-metric header,.personal-metric-bottom strong,.status-ring strong,.row-title,.msg-head b,.dl dd) { color:var(--text)!important; }
+html[data-theme=dark] .light-emerald :is(.muted,.hint,.small,.row-meta,.msg-head,.focus-time,.focus-body small,.milestone-status,.milestone-date,.status-key,.status-ring span,.profile-identity-text span,.task-stage-order,.task-stage-unit,.sched-axlab,.sched-dhead,.nav-item,.top-actions .icon-btn,.breadcrumb-part,.panel-caption,.nav-collapse) { color:var(--text-2); }
+html[data-theme=dark] .light-emerald .side .row-item,
+html[data-theme=dark] .light-emerald .side .row-item :is(.row-title,span),
+html[data-theme=dark] .light-emerald .documents-page .btn-link,
+html[data-theme=dark] .light-emerald .task-card-handoff b { color:var(--text)!important; }
+html[data-theme=dark] .light-emerald :is(input,textarea,select,.searchbox) { background:var(--surface-2)!important; color:var(--text)!important; border-color:var(--line-strong); box-shadow:none; }
+html[data-theme=dark] .light-emerald :is(.office-compose-box,.message-compose-box) textarea { background:transparent!important; }
+html[data-theme=dark] .light-emerald :is(input,textarea)::placeholder { color:#9ea8b8; }
+html[data-theme=dark] .btn { background:#303743; border-color:transparent; color:var(--text); box-shadow:none; }
+html[data-theme=dark] .btn:hover:not(:disabled) { background:#3a4451; color:var(--text); border-color:transparent; }
+html[data-theme=dark] .btn.primary { background:#205b45; border-color:transparent; color:var(--text); }
+html[data-theme=dark] .btn.primary:hover:not(:disabled) { background:#226449; color:var(--text); }
+html[data-theme=dark] .btn.danger { color:#ffc8cb; background:#4b3038; border-color:transparent; }
+html[data-theme=dark] .light-emerald .btn.ghost { color:var(--text-2); background:transparent; border-color:transparent; }
+html[data-theme=dark] .light-emerald .members-page .btn.ghost { color:var(--text); background:#303f51; border-color:transparent; }
+html[data-theme=dark] .light-emerald :is(.btn,.icon-btn,button):disabled { opacity:.5; }
+html[data-theme=dark] .light-emerald :is(.slide-toggle,.seg-pill,.seg,.subtab,.view-toggle) { background:#2b313b; border-color:transparent; }
+html[data-theme=dark] .light-emerald :is(.slide-toggle-label,.seg-pill button,.tab,.subtab,.msg-tool,.msg-action,.compose-mention,.compose-add-image,.message-compose-tools .icon-btn,.archived-entry-btn) { color:var(--text)!important; }
+html[data-theme=dark] .light-emerald :is(.slide-toggle-thumb,.seg-pill button[aria-pressed=true],.subtab[aria-selected=true]) { background:#46544f; border-color:transparent; box-shadow:0 1px 4px #0003; }
+html[data-theme=dark] .light-emerald :is(.slide-toggle-label.selected,.seg-pill button[aria-pressed=true],.tab[aria-selected=true]) { color:var(--text)!important; }
+html[data-theme=dark] .light-emerald .dashboard-quick-actions > div > .slide-toggle:first-child { background:#37353a; }
+html[data-theme=dark] .light-emerald .dashboard-quick-actions > div > .slide-toggle:first-child .slide-toggle-thumb { background:#595043; }
+html[data-theme=dark] .light-emerald :is(.dashboard-welcome,.dashboard-quick-actions) { background:transparent; }
+html[data-theme=dark] .light-emerald .nav { background:var(--nav-bg); }
+html[data-theme=dark] .light-emerald .top::before { background:linear-gradient(100deg,transparent 45%,#254537); opacity:.22; }
+html[data-theme=dark] .light-emerald .nav-item:hover { background:#2a323d; color:var(--text); }
+html[data-theme=dark] .light-emerald .nav-item[aria-current=page],
+html[data-theme=dark] .light-emerald .side .row-item[aria-current=true],
+html[data-theme=dark] .light-emerald .team-metric[aria-pressed=true] { background:#35483f; border-color:transparent; color:var(--text)!important; }
+html[data-theme=dark] .light-emerald.nav-min .nav-item[aria-current=page]::before { background:#35483f; }
+html[data-theme=dark] .light-emerald .side .row-item { border-color:transparent; box-shadow:none; }
+html[data-theme=dark] .light-emerald .side .row-item:hover { background:#2b343e; }
+html[data-theme=dark] .light-emerald .nav-item svg { color:inherit; }
+html[data-theme=dark] .light-emerald .nav-brand { color:var(--text); }
+html[data-theme=dark] .theme-switch { background:#525c6b; }html[data-theme=dark] [aria-checked=true] .theme-switch { background:#66b18e; }
+html[data-theme=dark] .light-emerald :is(.personal-task-flow,.task-board,.task-data-panel,.task-data-table) { border-color:var(--line); background:var(--surface); }
+html[data-theme=dark] .light-emerald .personal-task-flow .stage { --stage-fill:#252c35; background:var(--stage-fill); border-color:var(--line); }
+html[data-theme=dark] .light-emerald .personal-task-flow .stage:hover { --stage-fill:#303a43; }
+html[data-theme=dark] .light-emerald .personal-task-flow .stage[aria-pressed=true] { --stage-fill:#3b5146; }
+html[data-theme=dark] .light-emerald .personal-task-flow .stage::after { opacity:.25; }
+html[data-theme=dark] .light-emerald :is(.task-stage-symbol,.task-stage-icon,.metric-icon,.avatar,.file-icon) { background:#33453d; color:#e5f2eb; border-color:var(--line); }
+html[data-theme=dark] .light-emerald .task-stage-symbol .task-stage-icon { background:none; }
+html[data-theme=dark] .light-emerald .personal-task-flow .stage[aria-pressed=true] .task-stage-symbol,
+html[data-theme=dark] .light-emerald .team-task-overview .team-metric[aria-pressed=true] .task-stage-icon { background:#395a4a; color:#a6dec4; }
+html[data-theme=dark] .light-emerald .task-data-table { --task-title-ink:var(--text); }
+html[data-theme=dark] .light-emerald .team-metric strong { color:var(--text); }
+html[data-theme=dark] .light-emerald .metric-overdue strong { color:#f5b8a7; }
+html[data-theme=dark] .light-emerald :is(.status-ring > div,.status-ring-hole) { background:var(--surface); }
+html[data-theme=dark] .light-emerald :is(.team-status-total,.team-status-caption) { fill:var(--text); }
+html[data-theme=dark] .light-emerald :is(.team-status-legend,.trend-legend,.status-key,.cal-nav button,.personal-calendar-grid > button,.personal-calendar-weekdays,.cal-title) { color:var(--text-2); }
+html[data-theme=dark] .light-emerald :is(.personal-calendar-grid > button[aria-pressed=true] > span:not(.calendar-task-dots),.agenda-view) { background:#3a594a; color:var(--text); }
+html[data-theme=dark] .light-emerald :is(.focus-task,.milestone-progress-item) { color:var(--text); border-color:var(--line); }
+html[data-theme=dark] .light-emerald :is(.focus-task:hover,.milestone-progress-item:hover) { background:#2a323b; }
+html[data-theme=dark] .light-emerald :is(.bar,.load-track,.milestone-progress-track) { background:#414d49; }
+html[data-theme=dark] .light-emerald .personal-trend g[stroke] { stroke:#3b4552; }
+html[data-theme=dark] .light-emerald .personal-trend text { fill:#c2ccd8; }
+html[data-theme=dark] .light-emerald .personal-trend path[stroke='#367e56'] { stroke:#87cfaa; }
+html[data-theme=dark] .light-emerald .trend-legend { color:#b5dec8; }
+html[data-theme=dark] .light-emerald :is(.metric-change,.metric-change span) { color:#c8d4cd; }
+/* Tables also render in dialogs mounted directly under body. */
+html[data-theme=dark] :is(.table-wrap,.task-data-wrap) { background:var(--surface); border-color:var(--line); }
+html[data-theme=dark] :is(table.grid,.task-data-table) :is(th,td) { border-color:var(--line); color:var(--text); }
+html[data-theme=dark] .documents-page { --empty-file-heading:#2a313c; }
+html[data-theme=dark] :is(table.grid,.task-data-table) th { background:var(--surface-2); }
+html[data-theme=dark] :is(table.grid,.task-data-table) tr:hover td { background:var(--surface-2); }
+html[data-theme=dark] .light-emerald .sched-col.today { background:#31453d; }html[data-theme=dark] .light-emerald .sched-blk { background:#304038; border-color:#3e5046; }
+html[data-theme=dark] .light-emerald :is(.sched-blk-time,.sched-blk-title) { color:var(--text); }
+html[data-theme=dark] .light-emerald .sched-blk.hot { background:#544332; border-color:#68563d; }
+html[data-theme=dark] .light-emerald :is(.chat-bubble-message .msg-body,.office-message .msg-body) { background:#2b333e; color:var(--text); border-color:transparent; }
+html[data-theme=dark] .light-emerald :is(.chat-bubble-message.from-me .msg-body,.office-message.from-me .msg-body) { background:#355344; border-color:transparent; color:var(--text); }
+html[data-theme=dark] .light-emerald .office-message.from-agent .msg-body { background:none; border:0; }
+html[data-theme=dark] .light-emerald :is(.msg-quote,.office-reply-preview) { background:transparent; border-color:#7c8e86; color:#d4dce5; }
+html[data-theme=dark] :is(.pill,.tag,.chip) { background:#343d49; color:#e2e7ee; border-color:transparent; }
+html[data-theme=dark] .pill.ok { background:#2b4739; color:#c3e9d0; border-color:transparent; }
+html[data-theme=dark] .pill.wait { background:#4a3d29; color:#f7d8a2; border-color:transparent; }
+html[data-theme=dark] .pill.info { background:#2d4258; color:#c7e3ff; border-color:transparent; }
+html[data-theme=dark] :is(.pill.bad,.pill.danger) { background:#51353d; color:#ffccd2; border-color:transparent; }
+/* Portals live under body, so they use the same theme without relying on .shell. */
+html[data-theme=dark] :is(.pop,.modal,.modal-head,.modal-body,.modal-foot,.notification-pop-head,.emoji-picker,.note,.err,.toast) { background:var(--surface); color:var(--text); border-color:var(--line); }
+html[data-theme=dark] :is(.pop-title,.pop-item,.notification-item-title,.modal-title,.modal h2,.modal .field label,.modal .field,.check) { color:var(--text); }
+html[data-theme=dark] :is(.pop-item:hover,.emoji-picker button:hover) { background:#303c46; }
+html[data-theme=dark] :is(.modal input,.modal select,.modal textarea) { background:var(--surface-2); color:var(--text); border-color:var(--line-strong); }
+html[data-theme=dark] .light-emerald .notification-dot { box-shadow:0 0 0 2px var(--surface); }
+html[data-theme=dark] .light-emerald .profile-avatar { border-color:transparent; }
+html[data-theme=dark] .light-emerald .illustrated-empty h3 { color:var(--text-2); }
+html[data-theme=dark] .light-emerald :is(.session-folder-icon,.agent-reply-recipient,.agent-reply-actions button,.office-message .msg-head,.message-action-button,.file-action-icon) { color:#d8e0e9!important; }
+html[data-theme=dark] .light-emerald .office-compose-tools .btn:disabled { color:var(--text)!important; }
+html[data-theme=dark] .light-emerald .task-card-progress span { color:#c6d0dc; }
+html[data-theme=dark] .light-emerald .trend-legend .legend-created i { background:#9fd0b3; }
+html[data-theme=dark] .light-emerald .trend-legend .legend-done i { background:#438a66; }
+html[data-theme=dark] .light-emerald .personal-trend .trend-line { stroke:#98c4a9; }
+html[data-theme=dark] .avatar-preset { background:var(--surface-2); color:var(--text); border-color:transparent; }
+html[data-theme=dark] .avatar-preset:is([aria-pressed=true],:hover:not(:disabled)) { background:#35483f; border-color:transparent; }
+html[data-theme=dark] .light-emerald .nav-item { --nav-icon-cutout:#35483f; }
+html[data-theme=dark] .light-emerald .nav-item[aria-current=page] .nav-symbol { color:var(--text)!important; }
+
+html[data-theme=dark] .task-create-ai { --task-option-ink:var(--text); }
+
+
+/* Complete the component states that otherwise inherit fixed light-theme colors. */
+html[data-theme=dark] {
+ --shadow-1:0 1px 3px #0003; --shadow-2:0 5px 18px #0003;
+ scrollbar-color:#606e7f var(--page-bg);
+}
+html[data-theme=dark] :is(button,a,input,textarea,select,[tabindex]):focus-visible { outline:2px solid var(--focus); outline-offset:3px; }
+html[data-theme=dark] :is(.modal-mask,.detail-dismiss-layer) { background:#080c14a6; }
+html[data-theme=dark] .light-emerald :is(.paneled > .side,.paneled > .work,.paneled > .detail,.work > .card-head,.floating-detail .detail-head,.task-list,.office-work,.office-stream,.msg,.flow,.tree,.ref-card) { background:var(--surface); border-color:var(--line); color:var(--text); }
+html[data-theme=dark] .light-emerald .paneled > .detail.floating-detail { border-color:var(--line-strong); box-shadow:-14px 0 45px #0005; }
+html[data-theme=dark] .light-emerald :is(.msg,.exec,.task-list .exec):hover { background:var(--surface-2); }
+html[data-theme=dark] .light-emerald :is(.dashboard-welcome p,.welcome-date,.personal-metric-bottom p,.personal-metric-bottom small,.stage-hint,.task-description,.task-progress,.task-progress-detail span,.team-status-legend small,.team-status-legend b,.task-handoff,.task-handoff > span,.cal-nav,.sched-dname,.sched-dnum) { color:var(--text-2); }
+html[data-theme=dark] .light-emerald :is(.panel-h,.task-page-title,.task-title-link,.team-detail-member-name,.team-relay-people b,.document-grid-name,.member-name,.exec-title,.tree-name,.crumbs,.task-stage-title,.team-task-overview .team-metric-text > span) { color:var(--text); }
+html[data-theme=dark] .light-emerald :is(.team-task-distribution,.team-task-overview .team-metric,.team-task-overview .team-metric .task-stage-icon) { background:var(--surface-2); border-color:var(--line); color:var(--text); }
+html[data-theme=dark] .light-emerald .team-task-overview .team-metric:is(:hover,[aria-pressed=true]) { background:var(--grow-soft); border-color:transparent; }
+html[data-theme=dark] .light-emerald .personal-task-flow .stage .stage-n { color:var(--grow-dark); }
+html[data-theme=dark] .light-emerald .team-task-overview .metric-overdue strong { color:#ffc18d; }
+html[data-theme=dark] .task-priority { background:#2e493b; color:#c4e6cd; }
+html[data-theme=dark] .task-priority:is(.priority-T0,.priority-T1) { background:#51343a; color:#ffc5ba; }
+html[data-theme=dark] .task-priority.priority-T2 { background:#493e2d; color:#f4d59e; }
+html[data-theme=dark] .light-emerald :is(.task-data-table tr.selected td,table.grid tr[aria-selected=true] td) { background:#30483e; }
+html[data-theme=dark] .light-emerald :is(.documents-page > .work .crumbs a,.documents-page > .work .card.tight b,.documents-page > .work .card.tight .row-title) { color:var(--text); }
+html[data-theme=dark] .light-emerald :is(.document-file-card:hover,.document-file-card[aria-current=true]) { background:var(--grow-soft); border-color:transparent; box-shadow:none; }
+html[data-theme=dark] .light-emerald :is(.tree-path,.tree-row.on,.tree-name:hover,.office-quote-preview,.msg-quote,.office-reply-preview) { background:var(--surface-2); color:var(--text-2); border-color:#6d9d87; }
+html[data-theme=dark] .light-emerald :is(.side .subtabs .n,.group-member-teams .pill,.preview-notice,.personal-demo-label) { background:var(--surface-2); color:var(--text-2); }
+html[data-theme=dark] .light-emerald .side .row-item.session-nav-row[aria-current=true] .row-title > .truncate { color:var(--text); }
+html[data-theme=dark] .light-emerald .side .row-item.session-nav-row[aria-current=true] .session-row-time { color:var(--text-2); }
+html[data-theme=dark] .light-emerald .side .row-item[aria-current=true] .pill { background:#3b5b4b; color:#d0efdd; }
+html[data-theme=dark] .light-emerald :is(.view-toggle button[aria-pressed=true],.agenda-view:hover,.conversation-role:hover .pill) { background:var(--grow-soft); color:var(--grow-dark); }
+html[data-theme=dark] .light-emerald :is(.slide-toggle:hover:not(:disabled),.archived-entry-btn:hover,.top .top-actions > .icon-btn:hover,.icon-btn:hover,.msg-tool:hover,.agent-reply-actions button:hover,.office-compose-tools .compose-mention:hover:not(:disabled),.office-compose-tools .compose-add-image:hover:not(:disabled)) { background:var(--surface-2); color:var(--text); }
+html[data-theme=dark] .light-emerald .btn.ghost:hover:not(:disabled) { background:var(--surface-2); color:var(--text); }
+html[data-theme=dark] .light-emerald .members-page .btn.danger { background:var(--danger-soft); color:#ffc8cb; border-color:transparent; }
+html[data-theme=dark] .light-emerald :is(.dashboard-quick-actions .preview-toggle,.sched-chip) { background:#493e2d; color:#f4d59e; border-color:transparent; }
+/* Dialogs and menus are portals under body, independent of the shell. */
+html[data-theme=dark] :is(.modal,.pop,.emoji-picker,.office-mention-picker) { box-shadow:var(--shadow-pop); }
+html[data-theme=dark] :is(.modal .field-label,.modal .field > span,.modal .checkbox,.modal h3,.modal h4,.group-member-info strong,.modal .illustrated-empty h3) { color:var(--text); }
+html[data-theme=dark] :is(.modal .muted,.modal .hint,.modal .small,.modal-sub,.modal .group-required-note,.pop .muted,.pop .small,.pop-item-sub,.notification-item-body,.notification-item-time) { color:var(--text-2); }
+html[data-theme=dark] :is(.modal .searchbox,.modal .tree-path,.modal .tree,.modal .ref-card,.office-mention-picker,.emoji-picker) { background:var(--surface-2); color:var(--text); border-color:var(--line-strong); }
+html[data-theme=dark] :is(.modal .icon-btn,.modal .btn-link,.pop .btn-link) { color:var(--text-2); }
+html[data-theme=dark] :is(.modal .icon-btn:hover,.modal .tree-name:hover,.office-mention-picker button:hover) { background:#3a4451; color:var(--text); }
+html[data-theme=dark] :is(.modal .tree-row.on,.group-role-options label:has(:checked),.group-member-list .checkbox:has(:checked)) { background:var(--grow-soft); color:var(--text); border-color:transparent; }
+html[data-theme=dark] .note { background:#293a36; color:#d1e2db; border-color:#709e88; }
+html[data-theme=dark] .note.warn { background:#41382b; color:#f4dbb5; border-color:#c6a56d; }
+html[data-theme=dark] :is(.err,.toast.bad) { background:var(--danger-soft); color:#ffd2d4; border-color:#996571; }
+html[data-theme=dark] :is(.req,.required-mark,.group-required,.bad) { color:#ffb8ba; }
+html[data-theme=dark] .task-ai-tip { background:#303d37; color:var(--text); box-shadow:0 5px 18px #0008; }
+/* Text previews, version diffs and Markdown retain their own semantic colors. */
+html[data-theme=dark] :is(.diff,pre,.markdown pre,.markdown code,.prose code) { background:#181e26; color:#dbe4ee; border-color:var(--line-strong); }
+html[data-theme=dark] .diff .add { background:#284334; color:#c5ebd1; }
+html[data-theme=dark] .diff .del { background:#4a3039; color:#ffc5cd; }
+html[data-theme=dark] :is(.markdown blockquote,.prose blockquote) { color:var(--text-2); border-color:#729d86; }
+html[data-theme=dark] :is(.markdown a,.prose a) { color:#a6dec4; }
+html[data-theme=dark] .light-emerald .personal-metric .metric-ring > span { background:var(--surface); }
+html[data-theme=dark] .light-emerald .focus-task .focus-body b { color:var(--text); }
+html[data-theme=dark] .light-emerald .pinned-conversation-section { background:#252e37; }
+html[data-theme=dark] .light-emerald .workload-bubbles text { fill:#25372b; }
+html[data-theme=dark] .light-emerald .workload-bubbles .bubble-high text { fill:var(--text); }
+html[data-theme=dark] .light-emerald .workload-bubbles > g circle { stroke:#d1e2d23d; }
+html[data-theme=dark] .light-emerald .result-format-pdf > span { background:#51363d; color:#ffc4c4; }
+html[data-theme=dark] .light-emerald :is(.result-format-docx,.result-format-doc) > span { background:#304762; color:#c1dcff; }
+html[data-theme=dark] .light-emerald :is(.result-format-pptx,.result-format-ppt) > span { background:#4c3c2b; color:#ffd2a8; }
+html[data-theme=dark] :is(.login,.login-panel) { background:var(--page-bg); color:var(--text); }
+html[data-theme=dark] .login-card { background:var(--surface); color:var(--text); border:1px solid var(--line); }
+html[data-theme=dark] .login-card :is(.muted,.hint,.field-label,.small) { color:var(--text-2); }
+html[data-theme=dark] .login-art { background:linear-gradient(145deg,#133b31,#1d5846); }
+html[data-theme=dark] :is(.illustrated-empty > img,.office-welcome-art) { color-scheme:dark; }
+html[data-theme=dark] .login-ribbon { opacity:.38; }
+@media(prefers-reduced-motion:reduce) { html[data-theme=dark] :is(button,a,input,textarea,select,[tabindex]) { transition:none; } }
+
+html[data-theme=dark] .light-emerald .team-task-overview { background:var(--surface); border-color:var(--line); }
+html[data-theme=dark] .light-emerald .workload-bubbles .bubble-high circle { fill:#305b40; }
+html[data-theme=dark] .workload-mode .slide-toggle { background:#232a32; border-color:transparent; }
+html[data-theme=dark] .workload-mode .slide-toggle:hover:not(:disabled) { background:#313c46; }
+html[data-theme=dark] .workload-mode .slide-toggle-thumb { background:#42594d; border-color:transparent; }
+html[data-theme=dark] .workload-mode .slide-toggle-label.selected { color:var(--text)!important; }
+
+/* Dark controls use surface changes for hover and selection. */
+html[data-theme=dark] .light-emerald .task-page .exec[aria-current=true] { background:var(--grow-soft); }
+html[data-theme=dark] .light-emerald .task-page .exec[aria-current=true]:not(:focus-visible) { outline:none; }
+html[data-theme=dark] .light-emerald a.recent-result:hover { border-color:transparent; }
+html[data-theme=dark] .paneled.overlay-details > .detail.floating-detail .drawer-close { background:var(--surface-2); color:var(--text-2); border-color:transparent; }
+html[data-theme=dark] .paneled.overlay-details > .detail.floating-detail .drawer-close:hover { background:var(--grow-soft); color:var(--text); border-color:transparent; }
+
+/* Portal content has no .light-emerald ancestor: set text and control colors directly. */
+html[data-theme=dark] :is(.task-data-table,.history-table) {--task-title-ink:var(--text);color:var(--text);}
+html[data-theme=dark] :is(.task-data-table,.history-table) .task-title-link {color:var(--text)!important;}
+html[data-theme=dark] :is(.task-data-table,.history-table) .task-title-link:hover {color:var(--grow-dark)!important;}
+html[data-theme=dark] .light-emerald .btn,html[data-theme=dark] .modal .btn,html[data-theme=dark] .dashboard-task-drawer .btn {background:#242c26;color:var(--text);border-color:transparent;box-shadow:none;}
+html[data-theme=dark] :is(.light-emerald,.modal,.dashboard-task-drawer) .btn:hover:not(:disabled) {background:#303c33;color:var(--text);}
+html[data-theme=dark] :is(.light-emerald,.modal,.dashboard-task-drawer) .btn.primary {background:#24533e;color:#d1e5d8;}
+html[data-theme=dark] :is(.light-emerald,.modal,.dashboard-task-drawer) .btn.danger {background:#422a2d;color:#e7b5b8;}
+html[data-theme=dark] :is(.light-emerald,.modal,.dashboard-task-drawer) .btn.ghost {background:transparent;color:var(--text-2);}
+html[data-theme=dark] :is(.slide-toggle,.seg-pill) {background:#202822!important;}
+html[data-theme=dark] :is(.slide-toggle-thumb,.seg-pill button[aria-pressed=true]) {background:#34473a!important;}
+html[data-theme=dark] :is(.personal-trend,.team-status-donut) text {fill:var(--text-2)!important;}
+html[data-theme=dark] .personal-trend g[stroke] {stroke:#303c34!important;}
+html[data-theme=dark] .personal-trend .trend-line {stroke:#79b491;}
+html[data-theme=dark] :is(.sched-cal,.sched-head,.sched-axis,.sched-col) {background:var(--surface);color:var(--text-2);border-color:var(--line);}
+html[data-theme=dark] .sched-col.today {background:#15271c;}
+html[data-theme=dark] .sched-grid-line {border-color:#2b392f;}
+html[data-theme=dark] .sched-blk {background:#263b2e;color:#d2e1d6;border-color:#4b765b;}
+html[data-theme=dark] .sched-blk.hot {background:#433529;border-color:#ae8458;}
+html[data-theme=dark] .sched-blk.done {background:#242a26;color:#9da9a1;border-color:#44534a;}
+html[data-theme=dark] :is(.sched-blk-time,.sched-blk-title,.sched-cal-head b,.sched-dhead,.sched-axlab) {color:inherit;}
+html[data-theme=dark] .dashboard-task-drawer :is(h3,.side-title,.dl dd) {color:var(--text);}
+html[data-theme=dark] .dashboard-task-drawer :is(.muted,.small,.dl dt) {color:var(--text-2);}
+html[data-theme=dark] :is(.side .row-item:hover,.nav-item:hover,.focus-task:hover,.pop-item:hover,.emoji-picker button:hover,.pinned-conversation-section) {background:#222b25!important;}
+html[data-theme=dark] :is(.chat-bubble-message .msg-body,.office-message .msg-body) {background:#202a23!important;color:var(--text);}
+html[data-theme=dark] .office-message.from-agent .msg-body {background:transparent!important;}
+html[data-theme=dark] :is(.diff,pre,.markdown pre,.markdown code,.prose code) {background:#171d19;color:var(--text);}
+html[data-theme=dark] :is(input,textarea)::placeholder {color:var(--text-3)!important;}
+
+/* ===== 深色模式可读性增强（2026-11-08）：主按钮 / 选中态 / 数量徽标 / 图标 ===== */
+/* 本层是最后加载的胜利层。下面每条选择器的特异度都高于浅色主题里「漏进深色」的规则
+   （例如 theme.css 的 .side .row-item.group .small 浅灰底徽标、line203 的墨绿主按钮）。 */
+
+/* 1) 绿色主按钮：从近乎黑的墨绿提到清晰可辨的翠绿，文字近白，描边同色系提亮 */
+html[data-theme=dark] :is(.light-emerald,.modal,.dashboard-task-drawer) .btn.primary { background:#2f7d5b; color:#eafff4; border-color:#3f9d72; }
+html[data-theme=dark] :is(.light-emerald,.modal,.dashboard-task-drawer) .btn.primary:hover:not(:disabled) { background:#37926a; color:#f2fff8; border-color:#47ad7e; }
+
+/* 2) 数量徽标（个人/团队/组织空间计数）：去掉浅色遗留的浅灰底，改深色底 + 亮绿数字 + 细描边 */
+html[data-theme=dark] .light-emerald .side .row-item.group .small { background:#26332c; color:#a9d8bd; border:1px solid #33463b; }
+
+/* 3) 选中区域背景：侧栏空间 / 左侧导航 / 视图切换，统一加深一档并给出高亮标识 */
+html[data-theme=dark] .light-emerald .side .row-item[aria-current=true] { background:#2c5544; color:#eafff4!important; box-shadow:inset 3px 0 0 #4fbf8b; }
+html[data-theme=dark] .light-emerald .nav-item[aria-current=page] { background:#2b5142; color:#eafff4!important; }
+html[data-theme=dark] .light-emerald.nav-min .nav-item[aria-current=page]::before { background:#4fbf8b; }
+html[data-theme=dark] .light-emerald :is(.view-toggle button[aria-pressed=true],.agenda-view) { background:#2c5544; color:#eafff4; }
+
+/* 4) 图标：导航 / 右上工具 / 折叠箭头 / 行内菜单，整体提亮；选中与悬停转绿 */
+html[data-theme=dark] .light-emerald .nav-item .nav-symbol { color:#c2ccc4; }
+html[data-theme=dark] .light-emerald .nav-item:hover .nav-symbol { color:#a6dec4; }
+html[data-theme=dark] .light-emerald .nav-item[aria-current=page] .nav-symbol { color:#7fd6a8; }
+html[data-theme=dark] .light-emerald .top-actions .icon-btn { color:#c2ccc4; }
+html[data-theme=dark] .light-emerald .top-actions .icon-btn:hover { color:#8ad0ab; }
+html[data-theme=dark] .light-emerald .side .row-item.group .chev { color:#a9b5ac; }
+html[data-theme=dark] .light-emerald .side .row-item .row-menu { color:#a9b5ac; }
+html[data-theme=dark] .light-emerald .side .row-item .row-menu:hover { color:#c2ccc4; }
+
+/* ===== 深色模式：修近黑图标/文字漏进深色 + 首页图形提对比（2026-11-08 第二轮） ===== */
+/* 首页各面板标题左侧的小线性图标被浅色层写死 #202522（近黑），在黑底上隐形——提亮。 */
+html[data-theme=dark] .light-emerald .dash .panel-h-icon { color:#eef2ef; }
+/* 同类近黑文字（分区标题 / KPI 标签 / 日历头 / 看板标题）一并交回中性白。 */
+html[data-theme=dark] .light-emerald .dash :is(.sec-title,.kpi-label,.cal-head,.dash-title) { color:var(--text); }
+/* 「查看全部 →」是无 class 的裸链接，给一个清晰的可点色。 */
+html[data-theme=dark] .light-emerald .personal-panel header > a { color:#8ad0ab; text-decoration:none; }
+/* 指标图标加一圈淡底 + 近白描线，让四个指标图标都「看得见、跳得出」。 */
+html[data-theme=dark] .light-emerald .dash .personal-metric .metric-icon { background:#223029; color:#eef2ef; }
+
+/* 任务趋势：折线提近白、面积退暗、双柱加亮，摆脱「全绿叠绿发闷」。 */
+html[data-theme=dark] .light-emerald .personal-trend .trend-line { stroke:#e7f0e9; stroke-width:2.4; }
+html[data-theme=dark] .light-emerald .personal-trend #task-area-gradient stop:first-child { stop-color:#2f5a45; stop-opacity:.42; }
+html[data-theme=dark] .light-emerald .personal-trend #task-area-gradient stop:last-child { stop-color:#173026; stop-opacity:.06; }
+html[data-theme=dark] .light-emerald .personal-trend #task-created-gradient stop:first-child { stop-color:#8fd6ab; }
+html[data-theme=dark] .light-emerald .personal-trend #task-created-gradient stop:last-child { stop-color:#5cb687; }
+html[data-theme=dark] .light-emerald .personal-trend #task-done-gradient stop:first-child { stop-color:#41b078; }
+html[data-theme=dark] .light-emerald .personal-trend #task-done-gradient stop:last-child { stop-color:#2c8a5b; }
+/* 图例小方块跟着柱子改色，保持对应。 */
+html[data-theme=dark] .light-emerald .trend-legend .legend-created i { background:#8fd6ab; }
+html[data-theme=dark] .light-emerald .trend-legend .legend-done i { background:#41b078; }
