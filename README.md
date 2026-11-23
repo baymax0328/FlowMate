@@ -1,164 +1,145 @@
-# FlowMate · AI 原生协作工作台（v0.2 本地可运行版）
+# FlowMate · 面向协作的 AI 办公平台
 
-按《FlowMate 产品文档 v0.2》实现的完整 Web 应用：React 19 前端 + NestJS 11 后端 + 持久化数据库 + 文件存储 + 后台 Worker。
-不是单 HTML 页面，也不用 localStorage 当业务库；四个一级模块（Message / Workspace / Agent / Task）的服务端全部真实落库。
+**把「任务工作流 / 可协作的 Agent / 看板」做成一条链路的 AI 办公平台。**
+任务按固定流程流转，Agent 在流程内被多人协作调用，看板让所有产出可见——不是三个各做各的功能页。
+
+React 19 · NestJS 11 · Node 内置 SQLite（FTS5）· 一条命令本地起服务，不需要 Docker / PostgreSQL / Redis
+
+![任务工作流](docs/img/tasks.png)
 
 ---
 
-## 1. 一分钟跑起来
+## 它解决什么问题
 
-前置：Windows / macOS / Linux，**Node.js ≥ 24**（用到内置 SQLite，无需安装数据库）。
+团队里任务、AI 助手、进度看板常常是三套割裂的东西：
+
+- 任务在群里口头派，**没有状态机**，谁在等谁全靠问；
+- AI 只在个人对话框里产出一次性内容，**进不了团队流程**，也没法被同事复核；
+- 看板靠人手工填，**和真实数据对不上**，最后没人看。
+
+FlowMate 的判断是：这三件事必须共用一套数据与权限模型。于是它只有一个真相来源——任务的每一次流转、Agent 的每一次读写、看板的每一个数字，都来自同一批表。
+
+## 三个核心能力
+
+### 1. 任务工作流：四段式、有状态、可追责
+
+`创建 → 接收 → 负责 → 验收` 四段各自独立计数，任务按「创建人 →（1–5 位经手人）→ 交付人」的链路流转：
+
+- **接收**必须填预估时长，可接收 / 调整 / 退回；
+- **负责**支持手动排期与**容量感知的自动排期**（按预估时长 + 优先级 + 期限排进本周，不排过去、不晚于期限、不重叠）；
+- **验收**通过或重新指派，`completed` 只能由验收动作产生；
+- 14 个状态动作每个都在服务端校验前置状态与操作人权限——非法流转靠接口拒绝，不靠前端藏按钮。
+
+![看板](docs/img/dashboard.png)
+
+### 2. 可协作的 Agent：写入只能落草稿，改正式文件要多人点头
+
+Agent 的权限被拆成**工具分级 + 提案闸门**：
+
+- **7 个只读工具**（列目录 / 读文件 / 抽正文 / 搜内容 / 读图 / 读历史 / 读任务），每步留痕；
+- **6 个写入工具**（建草稿 / 写改草稿 / 建目录 / 写版本 / 产物落盘），**正式文件只能在草稿区改**；
+- 要改正式文件 → 生成提案 → **N 人共同确认**：`0/N → N/N` 期间文件字节不变，全部同意才写入且只写一次；
+- 不表态就 1 小时提醒、72 小时转「已搁置」（**绝不自动通过**），基准变了转 stale 重审；
+- 会话可共享给同事**只读**参与（可选历史范围与有效期），也可建团队分支双方同页输入；
+- 每个会话 2 个执行槽，租约 + fencing token 防止两个 Run 重复写入。
+
+![可协作的 Agent](docs/img/agent.png)
+
+### 3. 看板：我的 / 团队 × 日 / 周 / 月，与任务同源
+
+四张指标卡（今日任务数、Token 消耗量、平均耗时、交付完成度）+ 任务趋势、今日重点、状态分布、工作日历、团队负荷表。**看板不维护第二套真相**，数字全部从任务与会话表实时算出。
+
+## 30 秒跑起来
+
+前置只有一个：**Node.js ≥ 24**（用到内置 SQLite，不装数据库、不用 Docker）。
 
 ```bash
-pnpm install            # 依赖已在 pnpm-lock.yaml 固化
-cp .env.example .env    # 不填模型密钥也能跑，见 §5
-pnpm build              # 类型检查 + 编译后端 + 打包前端
-pnpm seed               # 首次运行灌演示数据
-pnpm start              # http://localhost:8080
+pnpm install
+pnpm start
 ```
 
-开发模式（前端热更新 + 后端 watch）：`pnpm dev` → 前端 http://localhost:5173（代理到 8080）。
+打开 **http://localhost:8080**，用下面任一账号登录（邮箱 + 统一密码 `abc123`）：
 
-重置演示数据：`pnpm run seed:reset`（等价 `node dist/scripts/seed.js --yes-reset`，必须带确认参数，启动脚本绝不会自动清库）。
-
-## 2. 演示账号（种子数据）
-
-| 登录名 | 邮箱 | 职务 / 权限范围 |
+| 登录名 | 邮箱 | 身份 |
 | --- | --- | --- |
-| baymax（大白伟） | `baymax@xingyu.test` | 负责人：组织所有者，三个团队全权限 |
-| hy123（虎牙） | `hy123@xingyu.test` | 产品总监：产品团队负责人，研发团队成员 |
-| cyx666（陈奕迅） | `cyx666@xingyu.test` | 设计总监：设计团队负责人，研发团队成员 |
-| xuyangtian（许杨天） | `xuyangtian@xingyu.test` | 技术总监：研发团队负责人（不在产品/设计团队，兼作权限负例账号） |
+| 大白伟 | `baymax@xingyu.test` | 负责人，全权限 |
+| 虎牙 | `hy123@xingyu.test` | 产品总监 |
+| 陈奕迅 | `cyx666@xingyu.test` | 设计总监 |
+| 许杨天 | `xuyangtian@xingyu.test` | 技术总监（不在产品/设计团队，用来试权限被拒） |
 
-统一密码：`abc123`（改 `.env` 里的 `SEED_PASSWORD` 后重新 `pnpm seed:reset` 可换）。
-组织：星屿科技（产品团队 / 设计团队 / 研发团队）、汇川制造（用于组织切换）。
+- **装依赖报 `ERR_PNPM_SYMLINK_FAILED`？** 说明当前 Windows 账户没有创建符号链接的权限。仓库根目录已放 `.npmrc`（`node-linker=hoisted`），默认就是平铺安装；手动补一条 `pnpm install --config.node-linker=hoisted` 即可。
+- **想局域网给同事看**：服务监听 `0.0.0.0:8080`，对方打开 `http://<你的内网IP>:8080`。
+- **要完整演示数据**：`pnpm run seed:reset`（清空重灌，必须带这个参数，平时不会误触）。
+- **没有模型密钥也能跑**：Agent 计划由内置确定性规划器产出，界面如实标注 `planner=deterministic`；需要模型的能力（读文件回答、纪要提取）会明确返回 503，**不会拿预制结果冒充成功**。
 
-种子自带的数据：11 个工作区（组织空间 / 三个团队空间 / 四个人的「我的文件」+ 各自独立空间 / 产品知识库等）、18 个文件（以 md 为主，另含 docx / pdf / xlsx / pptx / html 各 1—2 个用于验证正文抽取）、4 个任务（分别停在四个阶段，便于演示五阶段流转）、1 个群聊。**不含任何会话/请求/Run**——Agent 相关数据一律由你在界面上真实操作产生。
-
-
-## 3. 局域网给 2—3 人一起用
-
-服务默认监听 `0.0.0.0:8080`，启动日志会打印内网地址。队友在同一网络下打开：
+要接真实模型，把 `.env.example` 复制成 `.env` 填三项：
 
 ```
-http://<你的内网IP>:8080
-```
-
-取内网 IP：`ipconfig`（找 IPv4 地址）或看启动日志里已打印的行。
-
-Windows 放行入站端口（管理员 PowerShell，一次即可）：
-
-```powershell
-New-NetFirewallRule -DisplayName "FlowMate 8080" -Direction Inbound -Protocol TCP -LocalPort 8080 -Action Allow
-```
-
-**必须双人实测的动作**：共同确认（两人各点同意才写入）、Team 分支后双方同页输入、消息与提案的实时同步。
-实测断言已写在 `tests/e2e.mjs` 里，同一台机器开两个浏览器（不同账号）也能跑通，因为它走的是同一套 HTTP/WS 接口。
-
-安全妥协（v0.2 明示，见规格 D6）：HTTP 明文 + Cookie `Secure=false` + `SameSite=Lax`；界面顶部常驻「局域网测试环境，勿放敏感数据」横幅；仅限受信网络。
-
-## 4. 数据在哪、怎么备份
-
-| 内容 | 位置 |
-| --- | --- |
-| 数据库（SQLite，WAL） | `data/flowmate.sqlite3`（含 `-wal` / `-shm`） |
-| 文件对象（不可变 UUID 键） | `storage/<前2位>/<uuid>` |
-| 备份产物 | `backups/<时间戳>/backup.zip` + `manifest.json` |
-
-```bash
-pnpm backup             # 打包 DB + storage 到 backups/<时间戳>/
-pnpm restore            # 恢复最近一次备份（会先把当前数据挪到 backups/pre-restore-*/）
-pnpm restore backups\2026-10-26T13-40-00   # 或指定目录
-```
-
-`data/`、`storage/`、`backups/`、`.env` 都已在 `.gitignore` 内。
-
-## 5. AI 能力与模型密钥
-
-`.env` 里三项填齐即启用真实模型调用（标准 Chat Completions 接口，当前接 DeepSeek）：
-
-```
-MODEL_BASE_URL=https://<你的兼容端点>/v1
-MODEL_API_KEY=***
+MODEL_BASE_URL=https://api.deepseek.com
+MODEL_API_KEY=<你的密钥>
 MODEL_NAME=<模型名>
-MODEL_VISION_NAME=<支持图片的模型名，可选>
 ```
 
-- 未配置密钥时：Agent 的**计划与草稿**由内置确定性规划器产出，界面与 RunStep 全程标注 `planner=deterministic`（本地规划器 · 未调用模型）；而**纪要提取候选任务**依赖模型语义能力，会明确返回 `PROVIDER_UNAVAILABLE` 并可重试，FlowMate 不会用预制结果冒充提取成功（规格 §18 / §14.3）。
-- 视觉输入：首次使用图片时真实探测模型是否支持（`GET /api/v1/agent/model-status` 可看结果），不支持就明确提示。
-- 密钥只在后端读取，不进前端包、不进日志、不进模型上下文。
+密钥只在后端读取，不进前端包、不进日志、不进模型上下文。
 
-## 6. 目录结构
+## 技术取舍：三处替换，四条底线没松
 
-```
-server/core/        配置、DB、鉴权会话、权限解析、路径边界、错误契约、事件+outbox、调度器、WebSocket
-server/adapters/    模型适配器、本地存储、正文抽取管道（md/txt/html/docx/pdf/xlsx/pptx）
-server/modules/     auth org files search messages notifications sessions orchestrator proposals tasks discovery center
-db/migrations/      追加式 SQL 迁移（001~008）
-src/                React 19：app 外壳与全局搜索 / features 四模块 / components UI 原语 / styles 设计系统
-worker/             进程内 Worker 装配说明（Lite 模式下与 API 同进程，见 §7）
-scripts/            seed、backup/restore、dev、类型与 SQL 自检
-tests/              4 组核心不变量单测 + 端到端主链路脚本
-docs/               功能覆盖表、测试报告、与规格的剩余差距
-```
+目标机器没有 Docker、没有 PostgreSQL、没有 Redis，只有 2–3 人局域网。为了「`pnpm install` 之后一条命令就能跑」，做了三处替换，但**语义都保住了**：
 
-## 7. 与规格的三处技术替换（已在覆盖表逐条标注）
-
-| 规格写的 | 本版落地 | 原因与保持的语义 |
+| 规格原本 | 本项目落地 | 保住了什么 |
 | --- | --- | --- |
-| PostgreSQL 16/17 + tsvector | `node:sqlite` + FTS5 + 中文二元组索引 | 目标机没有 PG/Docker；仍是真 SQL、真事务、真外键、真倒排索引；`pnpm install` 零外部服务 |
-| Redis + BullMQ | 进程内调度器 `server/core/queue.ts` | 语义保留：命名队列并发上限、租约、fencing token、退避重试、重启从库恢复；业务真相始终在数据库 |
-| Docker Compose | 单进程 `pnpm start`（API 托管前端 + Worker 同进程） | 局域网 2—3 人够用；Worker 与 API 同生命周期，界面常驻「Lite 模式」说明 |
+| PostgreSQL 16/17 + tsvector | `node:sqlite` + FTS5 + 中文二元组索引 | 真 SQL、真事务、真外键、真倒排索引，中文可按正文检索 |
+| Redis + BullMQ | 进程内调度器 `server/core/queue.ts` | 命名队列并发上限、租约、fencing token、退避重试、重启从库恢复 |
+| Docker Compose | 单进程 `pnpm start`（API 托管前端 + Worker 同进程） | 局域网 2–3 人够用，界面常驻「Lite 模式」说明 |
 
-**没有为省事放松的四条底线**：服务端鉴权、路径不越界、正式文件写入必须过共同确认、幂等与版本冲突检测——全部有自动化断言（见 docs/测试报告.md）。
+**没有为省事放松的四条底线**（每条都有自动化断言）：
 
-## 8. 自检命令
+1. 服务端鉴权——会话权 / 目录权 / 动作权分别校验，前端只做展示；
+2. 路径不越界——canonical 路径 + 工具绑定校验，越界动作留 `denied` 痕迹；
+3. 正式文件写入必须过共同确认；
+4. 幂等与版本冲突检测——`Idempotency-Key`、`client_msg_id`、`base_version`、审批唯一索引。
 
-```bash
-pnpm typecheck      # 前端 + 后端类型检查
-pnpm test           # 核心不变量单测（签名失效 / Task 状态机 / 路径边界 / 去重与分词 / 探针基址护栏）
-node scripts/check-inserts.cjs server/modules/*/*.ts scripts/seed.ts   # SQL 列数与占位符自检
-```
-
-一条命令跑完全部回归（11 套，含端到端主链路与 SSR 渲染回归；实测通过数与仍未绿的断言见 `安装指南.md` §7）：
+## 验证
 
 ```bash
-# 先另起一个验证实例，绝不拿日常使用的 8080 当靶子
-node scripts/snapshot.mjs data-probe/flowmate.sqlite3      # 从线上库导一份一致性副本（不能用 cp：WAL 会被整段丢弃）
-cp -r storage storage-probe
-FLOWMATE_PORT=8090 FLOWMATE_DATA_DIR=data-probe FLOWMATE_STORAGE_DIR=storage-probe node dist/server/main.js &
-pnpm verify                                                # 默认打 http://127.0.0.1:8090/api/v1
+pnpm typecheck   # 前后端类型检查，0 错误
+pnpm test        # 核心不变量单测
+pnpm verify      # 11 套回归（含端到端主链路、时序挂起、SSR 渲染）
 ```
 
-`pnpm verify` 会拒绝把靶址指向 8080（除非显式 `ALLOW_8080=1`）——这条护栏是踩过坑之后加的：
-各探针历史上环境变量名互不相同，漏传任意一个就会静默用默认的 8080，把测试数据写进真实库里。
+`pnpm verify` 默认打 8090 验证实例并**拒绝指向 8080**，避免测试数据写进你正在用的库。当前 11 套断言通过 326 条，3 条已知落后于现行文案（详见 [docs/测试报告.md](docs/测试报告.md) 与《快速开始.md》），**这三条是断言没跟上，不是功能坏了**，没有靠改断言凑绿。
 
-## 9. 交给别人怎么跑
+覆盖情况按产品文档 §00–§26 逐条核对，见 [docs/功能覆盖表.md](docs/功能覆盖表.md)：61 条需求点、52 条已实现并有验证证据、11 项明确裁剪。
 
-见 [docs/交付与分发.md](docs/交付与分发.md)：三种方案（只给源码 / 连演示数据一起给 / 现场局域网演示）、每个目录放什么、密钥为什么不能进包、交付前自检清单。
+## 目录结构
 
-一键出包（白名单式收录，且出包前会逐文件扫描本机 `.env` 里的真实密钥值，命中即中止）：
-
-```bash
-node scripts/package-release.cjs                # 源码 + 已构建产物 dist（对方 pnpm install 后直接 pnpm start）
-node scripts/package-release.cjs --with-data    # 再带上干净的演示数据（data/ + storage/ 里被引用的对象）
-node scripts/package-release.cjs --src-only     # 连 dist 也不带，对方自己 pnpm build
+```
+server/core/        配置、DB、鉴权、权限、路径边界、错误契约、调度器、WebSocket
+server/adapters/    模型适配器、本地存储、正文抽取（md/txt/html/docx/pdf/xlsx/csv/pptx/图片）
+server/modules/     13 个业务模块：auth org files search messages notifications
+                    sessions orchestrator proposals tasks discovery center dashboard
+db/migrations/      22 个追加式 SQL 迁移
+src/                React 19：app 外壳、四个一级模块、UI 原语、设计系统样式
+scripts/            seed、backup/restore、dev、出包、自检
+tests/              单测 + 端到端 + 各类探针、时序与渲染回归
 ```
 
-本机会留下验证痕迹的目录（`data-probe*` / `storage-probe*` / `scratch` / `.probe` / `backups` / `*.log`）在排除清单里，不会进包。
+数据与文件：`data/flowmate.sqlite3`（WAL）+ `storage/<前2位>/<uuid>`；`pnpm backup` / `pnpm restore` 做备份与恢复，`data/`、`storage/`、`.env`、`ApiKeys.txt` 都在 `.gitignore` 内。
 
-## 10. 演示动线（对着规格 §22）
+## 已知边界（不粉饰）
 
-1. **文件准备**：文档 → 组织空间/产品知识库/客户门户改版，上传一份 docx/pdf/pptx/md，看「抽取中 → 已可检索」。
-2. **正文搜索**：搜一个只在 PDF 正文里出现的词；再看「正文不可检索」清单里的旧版合同扫描件。
-3. **个人办公**：个人办公 新建会话 → 用树形选择器挑一个自己的工作区（可下钻子工作区、顶部显示完整路径）→ 对话模式直接问答，或工作模式让它读工作区文件后回答/产出草稿；右栏看工具步骤、草稿、「本次读取」版本清单。
-4. **越界防护**：目标里写 `读取 ../../需求说明书-v1.md` → 对话中心 的 Run 详情里出现 `fs.read:denied` 与边界说明；个人会话试图绑团队/组织工作区会被服务端 403 并解释原因。
-5. **进入团队**：会话行内「···」→ 新建团队分支（选范围与图片）→ 双方在团队会话同页输入。
-6. **并行**：两人各提一条独立目标 → 两个执行槽真的并行，排队原因可见。
-7. **共同确认**：两人指令影响同一正式文件 → 提案 `0/N → 1/N`（期间文件字节不变）→ 全部同意才写入且只写一次。
-8. **超时挂起**：一方不表态，1 小时提醒、72 小时转「已搁置」（绝不自动通过），唤醒后基准变了转 stale 重审。
-9. **任务流转**：创建 → 指派 → 接收 → 负责 → 提交产物（固定版本）→ 退回 → 再提交 → 通过。
-10. **导入发现**：任务页「导入并分析」上传纪要 → 候选带可定位原文 → 确认后才进指派；重复导入不重复建。
-11. **共享会话**：会话头部「共享」→ 多选成员（列表里不含自己、已共享的单独显示）→ 选历史范围（全部 / 从最新记录开始）与有效期（1/7/30 天 / 永久）→ 底部开关一键开启或撤销；对方只读可见，不能发言也不能触发执行。
-12. **权限负例**：用许杨天（不在产品/设计团队）访问他人个人会话、私有文件、搜索、审批，服务端拒绝且不泄漏标题。
+- **局域网双机实测未做**：只有一台机器，但所有断言走 HTTP/WS，换机器重复执行即可；
+- **超时挂起的验证方式**：把提醒/挂起时间点改到过去再等真实 tick，不是真等 72 小时；
+- **模型厂商专有参数需各自配置**：某些网关要显式关思考，否则思考会吃光输出额度；
+- **裁剪项**：OCR、Office 在线编辑、移动端、外部推送、埋点看板等 11 项明确不做，不做静默降级。
 
+## 更多文档
+
+- [快速开始.md](快速开始.md) —— 拿到包之后怎么跑、三分钟走通主链路
+- [docs/功能覆盖表.md](docs/功能覆盖表.md) —— 与产品文档逐条对照
+- [docs/测试报告.md](docs/测试报告.md) —— 断言清单与问题修复记录
+- [docs/交付与分发.md](docs/交付与分发.md) —— 出包、密钥处理、交付前自检
+
+---
+
+本项目是 **2026 千问办公 AI 管理实践挑战赛** 参赛作品的本地可运行版本，代码开源供学习与交流。
